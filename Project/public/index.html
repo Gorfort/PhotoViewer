@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Local Folder Explorer</title>
+
+  <!-- External stylesheet (optional but tidy) -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Defer = run JS after the DOM has finished parsing -->
+  <script type="module" src="main.js" defer></script>
+</head>
+<body>
+  <h1>Local Folder Explorer</h1>
+  <button id="pickRoot">Pick Root Folder</button>
+  <input type="text" id="newFolderName" placeholder="New folder name" />
+  <button id="createFolderBtn">Create Folder</button>
+
+  <div id="breadcrumbs"></div>
+
+  <h2>Folders</h2>
+  <div id="folders"></div>
+
+  <h2>Images</h2>
+  <div id="images"></div>
+  <div id="pagination"></div>
+
+  <div id="lightbox" style="display:none;">
+    <button id="lightbox-close">✖</button>
+    <button id="lightbox-prev">←</button>
+    <img id="lightbox-img" src="" alt="Large view" />
+    <button id="lightbox-next">→</button>
+  </div>
+
+</body>
+</html>
