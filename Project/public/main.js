@@ -6,13 +6,15 @@ import {
   popPath,
   clearPathStack,
   getPathStackNames,
-  renderFolders  // <-- moved here
+  renderFolders
 } from './uiFolders.js';
 import { renderImages, renderPagination, setupLightbox } from './uiImages.js';
 
 const $ = id => document.getElementById(id);
 
 let currentPage = 1;
+
+const imagesTitle = $('images-title');  // <-- get the title element once
 
 $('pickRoot').addEventListener('click', async () => {
   try {
@@ -27,6 +29,9 @@ $('pickRoot').addEventListener('click', async () => {
 async function renderCurrent() {
   const handle = getCurrentFolderHandle();
   if (!handle) return alert('No folder selected');
+
+  // Set the images section title to the current folder name
+  imagesTitle.textContent = handle.name || 'Images';
 
   const hasPermission = await requestReadPermission(handle);
   if (!hasPermission) {

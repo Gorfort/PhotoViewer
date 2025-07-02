@@ -1,5 +1,8 @@
-body      { font-family: sans-serif; padding: 2rem; }
-#pickRoot { padding: 0.5rem 1rem; font-size: 1rem; }
+body {
+  font-family: sans-serif;
+  padding: 2rem;
+  padding-bottom: 5rem; /* extra space for fixed footer */
+}
 
 #breadcrumbs a {
   margin-right: 0.5rem;
@@ -7,7 +10,9 @@ body      { font-family: sans-serif; padding: 2rem; }
   color: #0077cc;
   text-decoration: none;
 }
-#breadcrumbs a:hover { text-decoration: underline; }
+#breadcrumbs a:hover {
+  text-decoration: underline;
+}
 
 #folders, #images {
   margin-top: 1rem;
@@ -16,14 +21,22 @@ body      { font-family: sans-serif; padding: 2rem; }
   gap: 12px;
 }
 
-.folder        { width: 120px; text-align: center; cursor: pointer; }
-.folder div    { font-size: 4rem; }
+.folder {
+  width: 120px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.folder div {
+  font-size: 4rem;
+}
 
 img {
   max-width: 160px;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+
 .image-container {
   display: inline-block;
   position: relative;
@@ -36,21 +49,12 @@ img {
   max-height: 150px;
 }
 
-.image-container button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: rgba(255, 0, 0, 0.7);
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 3px 6px;
-  font-size: 12px;
-  border-radius: 3px;
-}
 #lightbox {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0,0,0,0.8);
   display: flex;
   align-items: center;
@@ -91,4 +95,7 @@ img {
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
+}
+#lightbox {
+  display: none;
 }
