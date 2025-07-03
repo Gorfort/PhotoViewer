@@ -56,72 +56,75 @@ $('pickRoot').addEventListener('click', async () => {
 /* ────────────────────────────────────────────────────────────
    Render current folder                                       */
    async function renderCurrent() {
-  const handle = getCurrentFolderHandle();
-  if (!handle) {
-    alert('No folder selected');
-    return;
+    const handle = getCurrentFolderHandle();
+    if (!handle) {
+      alert('No folder selected');
+      return;
+    }
+  
+    // Clear the title container to prepare for fresh content
+    imagesTitle.innerHTML = '';
+  
+    // Create a span for folder name
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = handle.name || 'Images';
+    titleSpan.className = 'title-text';
+  
+    // Create a span for item count
+    const countSpan = document.createElement('span');
+    countSpan.id = 'image-count';
+  
+    // Append both spans inside imagesTitle
+    imagesTitle.appendChild(titleSpan);
+    imagesTitle.appendChild(countSpan);
+  
+    /* ask for permission once per folder */
+    if (await requestReadPermission(handle) !== true) {
+      alert('Need read permission to show contents');
+      return;
+    }
+  
+    /* clear previous UI */
+    $('folders').innerHTML    = '';
+    $('images').innerHTML     = '';
+    $('pagination').innerHTML = '';
+  
+    /* breadcrumbs */
+    renderBreadcrumbs();
+    setupBreadcrumbListeners();
+  
+    /* read directory entries */
+    const dirEntries = [];
+    for await (const [name, entryHandle] of handle.entries()) {
+      dirEntries.push({ name, entryHandle });
+    }
+  
+    const folders = dirEntries.filter(e => e.entryHandle.kind === 'directory');
+    const images  = dirEntries.filter(e =>
+      e.entryHandle.kind === 'file' &&
+      /\.(jpe?g|png|gif|bmp|webp|CR3|RAW)$/i.test(e.name)
+    );
+  
+    renderFolders(folders);
+    await renderImages(images, currentPage);
+
+    // Update the count span text and visibility:
+    if (images.length === 0) {
+      countSpan.textContent = '';          // hide number by clearing text
+    } else {
+      countSpan.textContent = `items : ${images.length}`;
+    }
+      
+    /* pagination */
+    const totalPages = Math.max(1, Math.ceil(images.length / 50));
+    if (currentPage > totalPages) currentPage = totalPages;
+  
+    renderPagination(totalPages, currentPage, async page => {
+      currentPage = page;
+      await renderCurrent();
+    });
   }
-
-  // Clear the title container to prepare for fresh content
-  imagesTitle.innerHTML = '';
-
-  // Create a span for folder name
-  const titleSpan = document.createElement('span');
-  titleSpan.textContent = handle.name || 'Images';
-  titleSpan.className = 'title-text';
-
-  // Create a span for item count
-  const countSpan = document.createElement('span');
-  countSpan.id = 'image-count';
-  // REMOVE this line:
-  // countSpan.style.marginLeft = 'auto';
-
-  // Append both spans inside imagesTitle
-  imagesTitle.appendChild(titleSpan);
-  imagesTitle.appendChild(countSpan);
-
-  /* ask for permission once per folder */
-  if (await requestReadPermission(handle) !== true) {
-    alert('Need read permission to show contents');
-    return;
-  }
-
-  /* clear previous UI */
-  $('folders').innerHTML    = '';
-  $('images').innerHTML     = '';
-  $('pagination').innerHTML = '';
-
-  /* breadcrumbs */
-  renderBreadcrumbs();
-  setupBreadcrumbListeners();
-
-  /* read directory entries */
-  const dirEntries = [];
-  for await (const [name, entryHandle] of handle.entries()) {
-    dirEntries.push({ name, entryHandle });
-  }
-
-  const folders = dirEntries.filter(e => e.entryHandle.kind === 'directory');
-  const images  = dirEntries.filter(e =>
-    e.entryHandle.kind === 'file' &&
-    /\.(jpe?g|png|gif|bmp|webp|CR3|RAW)$/i.test(e.name)
-  );
-
-  renderFolders(folders);
-  await renderImages(images, currentPage);
-
-  /* Update the count span text */
-  countSpan.textContent = `items : ${images.length}`;
-
-  /* pagination */
-  const totalPages = Math.max(1, Math.ceil(images.length / 50));
-  if (currentPage > totalPages) currentPage = totalPages;
-
-  renderPagination(totalPages, currentPage, async page => {
-    currentPage = page;
-    await renderCurrent();
-  });
-}
+  
 
 /* ────────────────────────────────────────────────────────────
    Public helpers used by uiFolders.js                         */
@@ -136,3 +139,4 @@ export async function navigateBreadcrumb(idx) {
   currentPage = 1;
   await renderCurrent();
 }
+

@@ -1,0 +1,17 @@
+#folders {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: #ccc;
+  }
+  
+  .folder {
+    width: 120px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .folder div {
+    font-size: 4rem;
+  }
+  

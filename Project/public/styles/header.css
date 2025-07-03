@@ -30,3 +30,22 @@ header {
     background-color: #2980b9;
   }
   
+  #breadcrumbs {
+    background-color: rgb(51, 71, 92);
+    color: #7fa5c0;
+    padding: 5px 32px;
+    display: none;
+  }
+  
+  #breadcrumbs a {
+    display: inline-block;
+    margin: 5px 0;
+    cursor: pointer;
+    color: #7fa5c0;
+    text-decoration: none;
+  }
+  
+  #breadcrumbs a:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: sans-serif;
+    padding: 2rem;
+    padding-bottom: 2rem;
+    background-color: #18212c;
+    opacity: 1;
+    background-image:
+      linear-gradient(135deg, #1b2632 25%, transparent 25%),
+      linear-gradient(225deg, #1b2632 25%, transparent 25%),
+      linear-gradient(45deg, #1b2632 25%, transparent 25%),
+      linear-gradient(315deg, #1b2632 25%, #18212c 25%);
+    background-position: 40px 0, 40px 0, 0 0, 0 0;
+    background-size: 80px 80px;
+    background-repeat: repeat;
+  }
+  
