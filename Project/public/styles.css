@@ -5,15 +5,30 @@ body {
 }
 
 #breadcrumbs a {
-  margin-right: 0.5rem;
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 5px;
   cursor: pointer;
   color: #0077cc;
   text-decoration: none;
 }
+
 #breadcrumbs a:hover {
   text-decoration: underline;
 }
 
+#breadcrumbs {
+  background-color: aliceblue;
+  width: 95%;  
+  padding: 5px 32px;  
+}
+
+#images-title {
+  background-color: aqua;
+  width: 95%;  
+  padding: 10px 32px;   
+  margin: 0px;
+}
 #folders, #images {
   margin-top: 1rem;
   display: flex;
