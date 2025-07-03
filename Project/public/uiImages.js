@@ -1,49 +1,66 @@
-import { getPathStackNames } from './uiFolders.js';
+/* uiImages.js ------------------------------------------------------------ */
 
 const $ = id => document.getElementById(id);
 
 const PHOTOS_PER_PAGE = 50;
-let lightboxState = {
-  images: [],
+
+/* Global state for lightbox */
+export const lightboxState = {
+  images: [],        // [{ name, file }]
   currentIndex: 0,
 };
 
-export async function renderImages(images, currentPage) {
-  lightboxState.images = images;
+/* ----------  renderImages  -------------------------------------------- */
+export async function renderImages(entries, currentPage) {
+  const start = (currentPage - 1) * PHOTOS_PER_PAGE;
+  const pageEntries = entries.slice(start, start + PHOTOS_PER_PAGE);
+
+  /* Load File objects so we can read metadata later */
+  const pageFiles = await Promise.all(
+    pageEntries.map(async ({ name, entryHandle }) => {
+      const file = await entryHandle.getFile();
+      return { name, file };
+    })
+  );
+
+  lightboxState.images = pageFiles;        // save for lightbox
+
+  /* Build thumbnails */
   const container = $('images');
   container.innerHTML = '';
 
-  const start = (currentPage - 1) * PHOTOS_PER_PAGE;
-  const pagedImages = images.slice(start, start + PHOTOS_PER_PAGE);
-
-  for (const { name, entryHandle } of pagedImages) {
-    await createImageThumb(name, entryHandle);
+  for (const { name, file } of pageFiles) {
+    createImageThumb(name, file);
   }
 }
 
-async function createImageThumb(name, fileHandle) {
-  const file = await fileHandle.getFile();
-  const url = URL.createObjectURL(file);
+/* ----------  createImageThumb  ---------------------------------------- */
+function createImageThumb(name, file) {
+  const thumbUrl = URL.createObjectURL(file);
 
-  const container = document.createElement('div');
-  container.className = 'image-container';
+  const wrap   = document.createElement('div');
+  wrap.className = 'image-container';
 
   const img = document.createElement('img');
-  img.src = url;
-  img.alt = name;
-  img.onload = () => URL.revokeObjectURL(url);
+  img.src   = thumbUrl;
+  img.alt   = name;
+  img.onload = () => URL.revokeObjectURL(thumbUrl);
+  img.style.cursor = 'pointer';
 
-  // Clicking the image opens lightbox
-  img.onclick = () => openLightbox(name);
+  /* open lightbox on click */
+  img.onclick = () => {
+    const idx = lightboxState.images.findIndex(i => i.name === name);
+    if (idx !== -1) openLightbox(idx);
+  };
 
-  container.appendChild(img);
-  $('images').appendChild(container);
+  wrap.appendChild(img);
+  $('images').appendChild(wrap);
 }
 
+/* ----------  pagination buttons  -------------------------------------- */
 export function renderPagination(totalPages, currentPage, onPageChange) {
-  const container = $('pagination');
-  container.innerHTML = '';
-
+  const nav = $('pagination');
+  nav.innerHTML = '';
   if (totalPages <= 1) return;
 
   for (let i = 1; i <= totalPages; i++) {
@@ -51,35 +68,70 @@ export function renderPagination(totalPages, currentPage, onPageChange) {
     btn.textContent = i;
     btn.disabled = i === currentPage;
     btn.onclick = () => onPageChange(i);
-    container.appendChild(btn);
+    nav.appendChild(btn);
   }
 }
 
-function openLightbox(name) {
-  const idx = lightboxState.images.findIndex(i => i.name === name);
-  if (idx === -1) return;
+/* ----------  Lightbox helpers  ---------------------------------------- */
+const lightbox     = $('lightbox');
+const imgBig       = $('lightbox-img');
+const metaBox      = $('lightbox-meta');
+const btnClose     = $('lightbox-close');
+const btnPrev      = $('lightbox-prev');
+const btnNext      = $('lightbox-next');
 
+function openLightbox(idx) {
   lightboxState.currentIndex = idx;
   updateLightbox();
-  $('lightbox').style.display = 'flex';
+  lightbox.style.display = 'flex';
 }
 
 function closeLightbox() {
-  $('lightbox').style.display = 'none';
+  lightbox.style.display = 'none';
+  imgBig.src = '';
+  metaBox.textContent = '';
 }
 
 function updateLightbox() {
-  const { currentIndex, images } = lightboxState;
-  const imgElement = $('lightbox-img');
+  const { images, currentIndex } = lightboxState;
+  const info = images[currentIndex];
+  if (!info) return;
 
-  if (!images[currentIndex]) return;
+  const file = info.file;
+  const url  = URL.createObjectURL(file);
 
-  images[currentIndex].entryHandle.getFile().then(file => {
-    const url = URL.createObjectURL(file);
-    imgElement.src = url;
-    imgElement.alt = images[currentIndex].name;
-    imgElement.onload = () => URL.revokeObjectURL(url);
-  });
+  imgBig.src = url;
+  imgBig.alt = file.name;
+
+  imgBig.onload = () => {
+    // Basic info
+    let metaText = '';
+
+    // Read EXIF
+    EXIF.getData(file, function() {
+      // Removed the "make" tag as you requested
+      const model = EXIF.getTag(this, "Model") || "Unknown Model";
+      const fstop = EXIF.getTag(this, "FNumber");
+      const exposure = EXIF.getTag(this, "ExposureTime");
+      const iso = EXIF.getTag(this, "ISOSpeedRatings");
+      const focalLength = EXIF.getTag(this, "FocalLength");
+
+      // Format values nicely
+      const fstopStr = fstop ? `f/${fstop}` : "N/A";
+      const exposureStr = exposure ? `${exposure}s` : "N/A";
+      const isoStr = iso || "N/A";
+      const focalLengthStr = focalLength ? `${focalLength}mm` : "N/A";
+
+      metaText += `Camera Model: ${model}`;
+      metaText += `\nF-stop: ${fstopStr}`;
+      metaText += `\nExposure: ${exposureStr}`;
+      metaText += `\nISO: ${isoStr}`;
+      metaText += `\nFocal Length: ${focalLengthStr}`;
+
+      metaBox.textContent = metaText;
+      URL.revokeObjectURL(url);
+    });
+  };
 }
 
 function prevImage() {
@@ -96,8 +148,22 @@ function nextImage() {
   }
 }
 
+/* Call once from main.js */
 export function setupLightbox() {
-  $('lightbox-close').onclick = closeLightbox;
-  $('lightbox-prev').onclick = prevImage;
-  $('lightbox-next').onclick = nextImage;
+  btnClose.onclick = closeLightbox;
+  btnPrev.onclick  = prevImage;
+  btnNext.onclick  = nextImage;
+
+  /* close when background clicked */
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  /* arrow / Esc keys */
+  document.addEventListener('keydown', e => {
+    if (lightbox.style.display !== 'flex') return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft')  prevImage();
+    else if (e.key === 'ArrowRight') nextImage();
+  });
 }

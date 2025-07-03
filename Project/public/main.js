@@ -1,75 +1,107 @@
-import { pickRootFolder, getCurrentFolderHandle, requestReadPermission } from './fileSystem.js';
+/* main.js --------------------------------------------------------------- */
+import {
+  pickRootFolder,
+  getCurrentFolderHandle,
+  requestReadPermission
+} from './fileSystem.js';
+
 import {
   renderBreadcrumbs,
   setupBreadcrumbListeners,
   pushPath,
   popPath,
-  clearPathStack,
-  getPathStackNames,
   renderFolders
 } from './uiFolders.js';
-import { renderImages, renderPagination, setupLightbox } from './uiImages.js';
+
+import {
+  renderImages,
+  renderPagination,
+  setupLightbox
+} from './uiImages.js';
 
 const $ = id => document.getElementById(id);
 
 let currentPage = 1;
 
-const imagesTitle = $('images-title');  // <-- get the title element once
+const breadcrumbsNav = $('breadcrumbs');   // <nav>
+const imagesTitle    = $('images-title');  // <h2 id="images-title">
 
+/* ────────────────────────────────────────────────────────────
+   Initialise lightbox handlers (buttons, keys, etc.)
+   uiImages.setupLightbox wires its own listeners.           */
+setupLightbox();
+
+/* ────────────────────────────────────────────────────────────
+   Pick‑Root button                                            */
 $('pickRoot').addEventListener('click', async () => {
   try {
     await pickRootFolder();
     currentPage = 1;
+
+    /* reveal hidden elements */
+    breadcrumbsNav.style.display = 'block';
+    imagesTitle.style.display    = 'block';
+
     await renderCurrent();
   } catch (err) {
+    /* ignore “Cancel” clicks, show others */
     if (err.name !== 'AbortError') alert(`Error: ${err.message}`);
   }
 });
 
+/* ────────────────────────────────────────────────────────────
+   Render current folder                                       */
 async function renderCurrent() {
   const handle = getCurrentFolderHandle();
-  if (!handle) return alert('No folder selected');
+  if (!handle) {
+    alert('No folder selected');
+    return;
+  }
 
-  // Set the images section title to the current folder name
   imagesTitle.textContent = handle.name || 'Images';
 
-  const hasPermission = await requestReadPermission(handle);
-  if (!hasPermission) {
+  /* ask for permission once per folder */
+  if (await requestReadPermission(handle) !== true) {
     alert('Need read permission to show contents');
     return;
   }
 
-  // Clear UI areas
-  $('folders').innerHTML = '';
-  $('images').innerHTML = '';
+  /* clear previous UI */
+  $('folders').innerHTML    = '';
+  $('images').innerHTML     = '';
   $('pagination').innerHTML = '';
 
+  /* breadcrumbs */
   renderBreadcrumbs();
   setupBreadcrumbListeners();
 
-  // Read folder entries
-  const entries = [];
+  /* read directory entries */
+  const dirEntries = [];
   for await (const [name, entryHandle] of handle.entries()) {
-    entries.push({ name, entryHandle });
+    dirEntries.push({ name, entryHandle });
   }
 
-  // Separate folders and images
-  const folders = entries.filter(e => e.entryHandle.kind === 'directory');
-  const images = entries.filter(e =>
-    e.entryHandle.kind === 'file' && /\.(jpe?g|png|gif|bmp|webp)$/i.test(e.name)
+  const folders = dirEntries.filter(e => e.entryHandle.kind === 'directory');
+  const images  = dirEntries.filter(e =>
+    e.entryHandle.kind === 'file' &&
+    /\.(jpe?g|png|gif|bmp|webp)$/i.test(e.name)
   );
 
   renderFolders(folders);
   await renderImages(images, currentPage);
 
-  const totalPages = Math.ceil(images.length / 50);
-  if (currentPage > totalPages) currentPage = totalPages || 1;
-  renderPagination(totalPages, currentPage, async (page) => {
+  /* pagination */
+  const totalPages = Math.max(1, Math.ceil(images.length / 50));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  renderPagination(totalPages, currentPage, async page => {
     currentPage = page;
     await renderCurrent();
   });
 }
 
+/* ────────────────────────────────────────────────────────────
+   Public helpers used by uiFolders.js                         */
 export async function navigateIntoFolder(name, handle) {
   pushPath(name, handle);
   currentPage = 1;
@@ -81,8 +113,3 @@ export async function navigateBreadcrumb(idx) {
   currentPage = 1;
   await renderCurrent();
 }
-
-// Initialize lightbox handlers
-setupLightbox();
-
-export { renderCurrent };

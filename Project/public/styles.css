@@ -2,6 +2,10 @@ body {
   font-family: sans-serif;
   padding: 2rem;
   padding-bottom: 2rem; /* extra space for fixed footer */
+  opacity: 1;
+  background-image:  radial-gradient(#737373 1.55px, transparent 1.55px), radial-gradient(#737373 1.55px, #18212c 1.55px);
+  background-size: 62px 62px;
+  background-position: 0 0,31px 31px;
 }
 
 #breadcrumbs a {
@@ -9,7 +13,7 @@ body {
   margin-top: 5px;
   margin-bottom: 5px;
   cursor: pointer;
-  color: #0077cc;
+  color: #7fa5c0;
   text-decoration: none;
 }
 
@@ -18,21 +22,26 @@ body {
 }
 
 #breadcrumbs {
-  background-color: aliceblue;
+  background-color: rgb(51, 71, 92);
+  color: #7fa5c0;
   width: 95%;  
   padding: 5px 32px;  
 }
 
 #images-title {
-  background-color: aqua;
+  background-color: rgb(59, 81, 105);
+  color: white;
   width: 95%;  
   padding: 10px 32px;   
   margin: 0px;
+  display: none;
+  
 }
 #folders, #images {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  color: #ccc;
 }
 
 .folder {
@@ -75,12 +84,14 @@ img {
   z-index: 9999;
 }
 
-#lightbox img {
-  max-width: 90%;
-  max-height: 80%;
+#lightbox-img {
+  max-width: 90vw;   /* max 90% of viewport width */
+  max-height: 80vh;  /* max 80% of viewport height */
+  object-fit: contain;
   border-radius: 8px;
-  box-shadow: 0 0 20px #000;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
 }
+
 
 #lightbox button {
   position: absolute;
@@ -118,4 +129,16 @@ img {
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px; /* control spacing here */
+}
+
+#breadcrumbs,
+#image-title {
+  display: none;
+}
+
+#lightbox-meta {
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
 }

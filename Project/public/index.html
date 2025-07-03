@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="styles.css" />
 
   <script type="module" src="main.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+
 </head>
 <body>
 
@@ -39,9 +41,13 @@
   <div id="lightbox" tabindex="0" aria-modal="true" role="dialog" aria-label="Image preview">
     <button id="lightbox-close" aria-label="Close lightbox">✖</button>
     <button id="lightbox-prev" aria-label="Previous image">←</button>
-    <img id="lightbox-img" src="" alt="Large view" />
+    <div id="lightbox-content">
+      <img id="lightbox-img" src="" alt="Large view" />
+      <div id="lightbox-meta"></div>
+    </div>
     <button id="lightbox-next" aria-label="Next image">→</button>
   </div>
+  
 
 </body>
 </html>
