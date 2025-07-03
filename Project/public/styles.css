@@ -1,4 +1,7 @@
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-family: sans-serif;
   padding: 2rem;
   padding-bottom: 2rem; /* extra space for fixed footer */
@@ -24,14 +27,12 @@ body {
 #breadcrumbs {
   background-color: rgb(51, 71, 92);
   color: #7fa5c0;
-  width: 95%;  
   padding: 5px 32px;  
 }
 
 #images-title {
   background-color: rgb(59, 81, 105);
   color: white;
-  width: 95%;  
   padding: 10px 32px;   
   margin: 0px;
   display: none;
@@ -65,8 +66,8 @@ img {
 
 .image-container img {
   display: block;
-  max-width: 400px;  
-  max-height: 400px;
+  max-width: 430px;  
+  max-height: 430px;
   width: 100%;      
   height: auto;
 }

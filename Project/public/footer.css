@@ -8,11 +8,9 @@ footer {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
-    user-select: none;
     position:fixed;
     bottom: 0;
-    width: 95%;
-    box-sizing: border-box;
+    width: 92.5%;
   }
   
   footer p {
