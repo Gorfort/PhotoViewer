@@ -38,3 +38,9 @@
     font-size: 14px;
   }
   
+  #lightbox-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
