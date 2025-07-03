@@ -1,7 +1,7 @@
 body {
   font-family: sans-serif;
   padding: 2rem;
-  padding-bottom: 5rem; /* extra space for fixed footer */
+  padding-bottom: 2rem; /* extra space for fixed footer */
 }
 
 #breadcrumbs a {
@@ -30,7 +30,6 @@ body {
   margin: 0px;
 }
 #folders, #images {
-  margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -47,21 +46,20 @@ body {
 }
 
 img {
-  max-width: 160px;
+  max-width: 200px;
   border: 1px solid #ccc;
-  border-radius: 6px;
 }
 
 .image-container {
-  display: inline-block;
-  position: relative;
-  margin: 5px;
+  padding: 4px;      
 }
 
 .image-container img {
   display: block;
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 400px;  
+  max-height: 400px;
+  width: 100%;      
+  height: auto;
 }
 
 #lightbox {
@@ -113,4 +111,11 @@ img {
 }
 #lightbox {
   display: none;
+}
+
+#images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px; /* control spacing here */
 }

@@ -9,7 +9,7 @@ footer {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
     user-select: none;
-    position: fixed;
+    position:fixed;
     bottom: 0;
     width: 95%;
     box-sizing: border-box;
