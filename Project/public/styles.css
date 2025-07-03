@@ -5,10 +5,12 @@ body {
   font-family: sans-serif;
   padding: 2rem;
   padding-bottom: 2rem; /* extra space for fixed footer */
+  background-color: #18212c;
   opacity: 1;
-  background-image:  radial-gradient(#737373 1.55px, transparent 1.55px), radial-gradient(#737373 1.55px, #18212c 1.55px);
-  background-size: 62px 62px;
-  background-position: 0 0,31px 31px;
+  background-image:  linear-gradient(135deg, #1b2632 25%, transparent 25%), linear-gradient(225deg, #1b2632 25%, transparent 25%), linear-gradient(45deg, #1b2632 25%, transparent 25%), linear-gradient(315deg, #1b2632 25%, #18212c 25%);
+  background-position:  40px 0, 40px 0, 0 0, 0 0;
+  background-size: 80px 80px;
+  background-repeat: repeat;
 }
 
 #breadcrumbs a {
@@ -57,7 +59,7 @@ body {
 
 img {
   max-width: 200px;
-  border: 1px solid #ccc;
+  border: 5px solid #cccccc;
 }
 
 .image-container {
@@ -148,4 +150,39 @@ img {
 #pagination{
   padding-top: 5px;
   padding-bottom: 20px;
+}
+
+#pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 0 24px;
+}
+
+#pagination button {
+  background-color: #1d6fa5;   /* same blue as header button */
+  color: #dfdfdf;
+  border: 1px solid #264c6e;   /* subtle darker border */
+  padding: 6px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+#pagination button:hover:not(:disabled) {
+  background-color: #2980b9;   /* hover blue (same as header hover) */
+}
+
+#pagination button:disabled {
+  background-color: #435b75;   /* muted when active/disabled */
+  cursor: default;
+  transform: none;
+}
+
+#pagination button:active:not(:disabled) {
+  transform: scale(0.95);
 }

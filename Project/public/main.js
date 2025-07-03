@@ -84,7 +84,7 @@ async function renderCurrent() {
   const folders = dirEntries.filter(e => e.entryHandle.kind === 'directory');
   const images  = dirEntries.filter(e =>
     e.entryHandle.kind === 'file' &&
-    /\.(jpe?g|png|gif|bmp|webp)$/i.test(e.name)
+    /\.(jpe?g|png|gif|bmp|webp|CR3|RAW)$/i.test(e.name)
   );
 
   renderFolders(folders);
