@@ -16,9 +16,10 @@ header {
   }
   
   header button {
-    background-color: #3498db;
+    background-color: #1d6fa5;
+    font-weight: bold;
     border: none;
-    color: white;
+    color: #dfdfdf;
     padding: 8px 16px;
     font-size: 16px; 
     border-radius: 4px;

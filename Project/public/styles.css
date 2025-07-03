@@ -125,6 +125,7 @@ img {
 }
 
 #images {
+  padding-top: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -141,4 +142,9 @@ img {
   margin-top: 10px;
   text-align: center;
   font-size: 14px;
+}
+
+#pagination{
+  padding-top: 5px;
+  padding-bottom: 20px;
 }
