@@ -11,35 +11,29 @@
   <script type="module" src="main.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
   <link rel="icon" type="image/png" sizes="16x16" href="../aperture.png" />
-  
-
 </head>
 <body>
-
   <header>
     <h1>Local Folder Explorer</h1>
     <button id="pickRoot">Open Folder</button>
   </header>
-
-
   <main role="main">
     <section>
       <nav id="breadcrumbs" aria-label="Breadcrumb navigation"></nav>
       <section>
-        <h2 id="images-title">Images</h2>
+        <h2 id="images-title">
+          <span class="title-text">Images</span>
+          <span id="image-count"></span>
+        </h2>
         <div id="images"></div>
         <div id="pagination"></div>
       </section>
       <div id="folders"></div>
     </section>
-
-
   </main>
-
   <footer>
     <p>Thibaud Racine - 2025</p>
   </footer>
-
   <div id="lightbox" tabindex="0" aria-modal="true" role="dialog" aria-label="Image preview">
     <button id="lightbox-close" aria-label="Close lightbox">✖</button>
     <button id="lightbox-prev" aria-label="Previous image">←</button>
@@ -49,7 +43,5 @@
     </div>
     <button id="lightbox-next" aria-label="Next image">→</button>
   </div>
-  
-
 </body>
 </html>

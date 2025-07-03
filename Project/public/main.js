@@ -26,6 +26,9 @@ let currentPage = 1;
 const breadcrumbsNav = $('breadcrumbs');   // <nav>
 const imagesTitle    = $('images-title');  // <h2 id="images-title">
 
+/* Add this in your HTML or dynamically in JS */
+// <h2 id="images-title">Images <span id="image-count"></span></h2>
+
 /* ────────────────────────────────────────────────────────────
    Initialise lightbox handlers (buttons, keys, etc.)
    uiImages.setupLightbox wires its own listeners.           */
@@ -40,7 +43,8 @@ $('pickRoot').addEventListener('click', async () => {
 
     /* reveal hidden elements */
     breadcrumbsNav.style.display = 'block';
-    imagesTitle.style.display    = 'block';
+    imagesTitle.style.display    = 'flex'; 
+    
 
     await renderCurrent();
   } catch (err) {
@@ -51,14 +55,30 @@ $('pickRoot').addEventListener('click', async () => {
 
 /* ────────────────────────────────────────────────────────────
    Render current folder                                       */
-async function renderCurrent() {
+   async function renderCurrent() {
   const handle = getCurrentFolderHandle();
   if (!handle) {
     alert('No folder selected');
     return;
   }
 
-  imagesTitle.textContent = handle.name || 'Images';
+  // Clear the title container to prepare for fresh content
+  imagesTitle.innerHTML = '';
+
+  // Create a span for folder name
+  const titleSpan = document.createElement('span');
+  titleSpan.textContent = handle.name || 'Images';
+  titleSpan.className = 'title-text';
+
+  // Create a span for item count
+  const countSpan = document.createElement('span');
+  countSpan.id = 'image-count';
+  // REMOVE this line:
+  // countSpan.style.marginLeft = 'auto';
+
+  // Append both spans inside imagesTitle
+  imagesTitle.appendChild(titleSpan);
+  imagesTitle.appendChild(countSpan);
 
   /* ask for permission once per folder */
   if (await requestReadPermission(handle) !== true) {
@@ -89,6 +109,9 @@ async function renderCurrent() {
 
   renderFolders(folders);
   await renderImages(images, currentPage);
+
+  /* Update the count span text */
+  countSpan.textContent = `items : ${images.length}`;
 
   /* pagination */
   const totalPages = Math.max(1, Math.ceil(images.length / 50));

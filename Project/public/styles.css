@@ -33,13 +33,26 @@ body {
 }
 
 #images-title {
+  display: flex;
+  justify-content: space-between; /* title left, count right */
+  align-items: center;
   background-color: rgb(59, 81, 105);
   color: white;
-  padding: 10px 32px;   
-  margin: 0px;
+  padding: 10px 32px;
+  margin: 0;
+  font-size: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
   display: none;
-  
 }
+
+#image-count {
+  font-weight: normal;
+  font-size: 1rem;
+  color: #b0c4de;
+  /* margin-left: 8px; */ /* you can remove this margin if you want it flush right */
+}
+
 #folders, #images {
   display: flex;
   flex-wrap: wrap;
@@ -185,4 +198,11 @@ img {
 
 #pagination button:active:not(:disabled) {
   transform: scale(0.95);
+}
+
+#image-count {
+  margin-left: 8px;
+  font-weight: normal;
+  color: #7fa5c0; /* match your palette */
+  font-size: 0.8em;
 }
