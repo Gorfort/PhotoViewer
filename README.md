@@ -13,15 +13,6 @@ A lightweight web-based application to browse and preview images from a local fo
 
 ## 🚀 Getting Started
 
-### 1. Clone or Download
-
-```bash
-git clone https://github.com/yourusername/image-folder-viewer
-cd image-folder-viewer
-```
-
-### 2. Launch the Program
-
 Make sure you have [Node.js](https://nodejs.org/) installed.
 
 ```bash
