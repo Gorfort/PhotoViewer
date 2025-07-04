@@ -43,23 +43,6 @@ http://localhost:3000
 
 - `.jpg`, `.jpeg`, `.png`, `.gif`, `.bmp`, `.webp`, `.cr3`, `.raw`
 
-## 📁 Project Structure
-
-```
-├── index.html
-├── server.js
-├── main.js
-├── fileSystem.js
-├── uiFolders.js
-├── uiImages.js
-├── styles/
-│   ├── main.css
-│   ├── header.css
-│   └── footer.css
-├── aperture.ico
-└── README.md
-```
-
 ## 🛠 Browser Support
 
 - ✅ Chrome
