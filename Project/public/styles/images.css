@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(59, 81, 105);
+    background-color: rgb(51, 71, 92);
     color: white;
     padding: 10px 32px;
     margin: 0;
@@ -39,8 +39,10 @@
     height: auto;
   }
   
-  img {
-    max-width: 200px;
+  #images img,
+  .image-container img {
+    max-width: 450px;
     border: 5px solid #cccccc;
   }
+  
   

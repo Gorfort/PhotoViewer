@@ -1,10 +1,10 @@
 #pagination {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    padding: 8px 0 24px;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 0 60px; /* Add more space so buttons stay above the footer */
+}
   
   #pagination button {
     background-color: #1d6fa5;

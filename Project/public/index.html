@@ -18,26 +18,32 @@
 </head>
 <body>
   <header>
-    <h1>Local Folder Explorer</h1>
+    <div class="header-left">
+      <img src="aperture.png" alt="Logo" class="header-logo" />
+      <h1>Local Folder Explorer</h1>
+    </div>
     <button id="pickRoot">Open Folder</button>
   </header>
   <main role="main">
     <section>
-      <nav id="breadcrumbs" aria-label="Breadcrumb navigation"></nav>
+
       <section>
         <h2 id="images-title">
           <span class="title-text">Images</span>
           <span id="image-count"></span>
         </h2>
+        <nav id="breadcrumbs" aria-label="Breadcrumb navigation"></nav>
         <div id="images"></div>
-        <div id="pagination"></div>
+        <div id="folders"></div>
       </section>
-      <div id="folders"></div>
+      <div id="pagination"></div>
     </section>
   </main>
   <footer>
-    <p>Thibaud Racine - 2025</p>
+    <p class="left-content">By Thibaud Racine</p>
+    <p class="right-content">2025</p>
   </footer>
+  
   <div id="lightbox" tabindex="0" aria-modal="true" role="dialog" aria-label="Image preview">
     <button id="lightbox-close" aria-label="Close lightbox">✖</button>
     <button id="lightbox-prev" aria-label="Previous image">←</button>
