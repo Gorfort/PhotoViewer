@@ -13,6 +13,7 @@ footer {
   font-size: 14px;
   overflow: hidden;  /* Prevent content from overflowing */
   white-space: nowrap; /* Prevent text from wrapping causing height issues */
+  box-shadow: 4px 0px 8px rgba(0,0,0,0.3);
 }
 
 footer .left-content,

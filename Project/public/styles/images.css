@@ -1,16 +1,21 @@
 #images-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgb(51, 71, 92);
-    color: white;
-    padding: 10px 32px;
-    margin: 0;
-    font-size: 1.5rem;
-    width: 100%;
-    box-sizing: border-box;
-    display: none; /* hidden initially */
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(51, 71, 92);
+  color: white;
+  padding: 10px 32px;
+  font-size: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50px; /* adjust this based on the height of header + breadcrumbs */
+  left: 0;
+  z-index: 998;
+
+  display: none; /* keep this if it's supposed to be toggled dynamically */
+}
+
   
   #image-count {
     font-weight: normal;

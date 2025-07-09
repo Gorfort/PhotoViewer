@@ -1,13 +1,23 @@
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 32px;
   background-color: #2c3e50;
   color: white;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+main {
+  padding-top: 144px; /* header (e.g. 64px) + breadcrumbs (32px) + title (48px) */
+}
+
 
 header h1 {
   display: flex;
@@ -41,11 +51,20 @@ header h1 {
   }
   
   #breadcrumbs {
+    position: fixed;
+    top: 118px; /* adjust based on your header height */
+    left: 0;
+    width: 100%;
+    z-index: 997;
+  
     background-color: rgb(59, 81, 105);
     color: #7fa5c0;
     padding: 5px 32px;
-    display: none;
+  
+    display: none; /* or flex/block if you want it visible initially */
+    box-sizing: border-box;
   }
+  
   
   #breadcrumbs a {
     display: inline-block;
@@ -63,4 +82,3 @@ header h1 {
     width: 24px;
     height: 24px;
   }
-  

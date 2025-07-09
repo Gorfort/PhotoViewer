@@ -26,7 +26,7 @@ export function renderFolders(folders) {
   folders.forEach(({ name, entryHandle }) => {
     const box = document.createElement('div');
     box.className = 'folder';
-    box.innerHTML = `<div>📁</div><span>${name}</span>`;
+    box.innerHTML = `<div>🗁</div><span>${name}</span>`;
     box.onclick = () => navigateIntoFolder(name, entryHandle);
     container.appendChild(box);
   });
