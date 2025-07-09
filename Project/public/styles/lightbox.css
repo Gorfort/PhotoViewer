@@ -44,3 +44,21 @@
     align-items: center;
     flex-direction: column;
   }
+  
+  .lightbox-action {
+    display: inline-block;
+    margin: 10px auto 0;
+    padding: 6px 16px;
+    background-color: #1d6fa5;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    text-align: center;
+    transition: background 0.3s ease;
+  }
+  
+  .lightbox-action:hover {
+    background-color: #2980b9;
+  }
+  

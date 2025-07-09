@@ -38,14 +38,16 @@ export async function renderImages(entries, currentPage) {
 function createImageThumb(name, file) {
   const thumbUrl = URL.createObjectURL(file);
 
-  const wrap   = document.createElement('div');
+  const wrap = document.createElement('div');
   wrap.className = 'image-container';
 
   const img = document.createElement('img');
-  img.src   = thumbUrl;
-  img.alt   = name;
-  img.onload = () => URL.revokeObjectURL(thumbUrl);
+  img.src = thumbUrl;
+  img.alt = name;
+  img.dataset.name = name;                // handy if you need lookup later
   img.style.cursor = 'pointer';
+
+  img.onload = () => URL.revokeObjectURL(thumbUrl);
 
   /* open lightbox on click */
   img.onclick = () => {
@@ -73,12 +75,18 @@ export function renderPagination(totalPages, currentPage, onPageChange) {
 }
 
 /* ----------  Lightbox helpers  ---------------------------------------- */
-const lightbox     = $('lightbox');
-const imgBig       = $('lightbox-img');
-const metaBox      = $('lightbox-meta');
-const btnClose     = $('lightbox-close');
-const btnPrev      = $('lightbox-prev');
-const btnNext      = $('lightbox-next');
+const lightbox    = $('lightbox');
+const imgBig      = $('lightbox-img');
+const metaBox     = $('lightbox-meta');
+const btnClose    = $('lightbox-close');
+const btnPrev     = $('lightbox-prev');
+const btnNext     = $('lightbox-next');
+
+/* NEW: create a single Download <a> element (styled by .lightbox-action) */
+const btnDownload = document.createElement('a');
+btnDownload.id = 'lightbox-download';
+btnDownload.className = 'lightbox-action';
+btnDownload.textContent = 'Download';
 
 function openLightbox(idx) {
   lightboxState.currentIndex = idx;
@@ -87,6 +95,11 @@ function openLightbox(idx) {
 }
 
 function closeLightbox() {
+  /* revoke last object URL to free memory */
+  if (imgBig.dataset.url) {
+    URL.revokeObjectURL(imgBig.dataset.url);
+    delete imgBig.dataset.url;
+  }
   lightbox.style.display = 'none';
   imgBig.src = '';
   metaBox.textContent = '';
@@ -97,39 +110,43 @@ function updateLightbox() {
   const info = images[currentIndex];
   if (!info) return;
 
+  /* revoke any previous URL */
+  if (imgBig.dataset.url) {
+    URL.revokeObjectURL(imgBig.dataset.url);
+  }
+
   const file = info.file;
   const url  = URL.createObjectURL(file);
+  imgBig.dataset.url = url;
 
   imgBig.src = url;
   imgBig.alt = file.name;
 
+  /* ----- DOWNLOAD BUTTON ----- */
+  btnDownload.href     = url;
+  btnDownload.download = file.name;
+  if (!metaBox.nextSibling || metaBox.nextSibling.id !== 'lightbox-download') {
+    metaBox.insertAdjacentElement('afterend', btnDownload);
+  }
+  /* --------------------------- */
+
   imgBig.onload = () => {
-    // Basic info
     let metaText = '';
 
-    // Read EXIF
     EXIF.getData(file, function() {
-      // Removed the "make" tag as you requested
-      const model = EXIF.getTag(this, "Model") || "Unknown Model";
-      const fstop = EXIF.getTag(this, "FNumber");
-      const exposure = EXIF.getTag(this, "ExposureTime");
-      const iso = EXIF.getTag(this, "ISOSpeedRatings");
-      const focalLength = EXIF.getTag(this, "FocalLength");
-
-      // Format values nicely
-      const fstopStr = fstop ? `f/${fstop}` : "N/A";
-      const exposureStr = exposure ? `${exposure}s` : "N/A";
-      const isoStr = iso || "N/A";
-      const focalLengthStr = focalLength ? `${focalLength}mm` : "N/A";
+      const model       = EXIF.getTag(this, 'Model') || 'Unknown Model';
+      const fstop       = EXIF.getTag(this, 'FNumber');
+      const exposure    = EXIF.getTag(this, 'ExposureTime');
+      const iso         = EXIF.getTag(this, 'ISOSpeedRatings');
+      const focalLength = EXIF.getTag(this, 'FocalLength');
 
       metaText += `Camera Model: ${model}`;
-      metaText += `\nF-stop: ${fstopStr}`;
-      metaText += `\nExposure: ${exposureStr}`;
-      metaText += `\nISO: ${isoStr}`;
-      metaText += `\nFocal Length: ${focalLengthStr}`;
+      metaText += `\nF-stop: ${fstop ? 'f/' + fstop : 'N/A'}`;
+      metaText += `\nExposure: ${exposure ? exposure + 's' : 'N/A'}`;
+      metaText += `\nISO: ${iso || 'N/A'}`;
+      metaText += `\nFocal Length: ${focalLength ? focalLength + 'mm' : 'N/A'}`;
 
       metaBox.textContent = metaText;
-      URL.revokeObjectURL(url);
     });
   };
 }
@@ -162,7 +179,7 @@ export function setupLightbox() {
   /* arrow / Esc keys */
   document.addEventListener('keydown', e => {
     if (lightbox.style.display !== 'flex') return;
-    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'Escape')        closeLightbox();
     else if (e.key === 'ArrowLeft')  prevImage();
     else if (e.key === 'ArrowRight') nextImage();
   });
