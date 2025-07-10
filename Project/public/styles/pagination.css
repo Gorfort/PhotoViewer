@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  padding: 8px 0 60px; /* Add more space so buttons stay above the footer */
+  padding: 0px 0 60px; /* Add more space so buttons stay above the footer */
 }
   
   #pagination button {
