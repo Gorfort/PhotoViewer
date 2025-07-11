@@ -5,11 +5,9 @@ A lightweight web-based application to browse and preview images from a local fo
 ## 🔍 Features
 
 - Pick a local root folder and browse its subdirectories
-- View images (JPG, PNG, GIF, WebP, etc.) with a lightbox
 - Pagination support for large image sets
 - Breadcrumb navigation for folder hierarchy
 - Displays number of image items (automatically hidden if empty)
-- Responsive design with clean UI
 
 ## 🚀 Getting Started
 
