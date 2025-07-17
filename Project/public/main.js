@@ -23,19 +23,11 @@ const $ = id => document.getElementById(id);
 
 let currentPage = 1;
 
-const breadcrumbsNav = $('breadcrumbs');   // <nav>
-const imagesTitle    = $('images-title');  // <h2 id="images-title">
+const breadcrumbsNav = $('breadcrumbs');  
+const imagesTitle    = $('images-title'); 
 
-/* Add this in your HTML or dynamically in JS */
-// <h2 id="images-title">Images <span id="image-count"></span></h2>
-
-/* ────────────────────────────────────────────────────────────
-   Initialise lightbox handlers (buttons, keys, etc.)
-   uiImages.setupLightbox wires its own listeners.           */
 setupLightbox();
 
-/* ────────────────────────────────────────────────────────────
-   Pick‑Root button                                            */
 $('pickRoot').addEventListener('click', async () => {
   try {
     await pickRootFolder();
